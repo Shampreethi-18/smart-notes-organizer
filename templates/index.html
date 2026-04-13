@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notes</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<h2>Hello {{ session.username }} 👋</h2>
+<a href="/logout">Logout</a>
+
+<form method="POST" action="/add">
+    <textarea name="content" placeholder="Write your note..." required></textarea>
+    <input type="text" name="category" placeholder="Category" required>
+    <button>Add Note</button>
+</form>
+
+<div class="grid">
+{% for note in notes %}
+    <div class="note-card {% if note.pinned %}pinned{% endif %}">
+        <p>{{ note.content }}</p>
+        <small>{{ note.category }}</small>
+        <a href="/pin/{{ note.id }}">📌</a>
+    </div>
+{% endfor %}
+</div>
+
+</body>
+</html>

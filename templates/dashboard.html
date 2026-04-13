@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="top-bar">
+        <h2>Hello {{ session.username }} 👋</h2>
+        <a href="/logout" class="logout">Logout</a>
+    </div>
+
+    <form method="POST" action="/add">
+        <textarea name="content" placeholder="Write your note..." required></textarea>
+        <input type="text" name="category" placeholder="Category" required>
+        <button>Add</button>
+    </form>
+
+    <div class="notes">
+        {% for note in notes %}
+        <div class="note-card">
+            <p>{{ note.content }}</p>
+            <div class="note-category">{{ note.category }}</div>
+
+            <div class="actions">
+                <a href="/delete/{{ note.id }}" class="delete">🗑 Delete</a>
+                <a href="/pin/{{ note.id }}" class="pin">📌 Pin</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+</body>
+</html>

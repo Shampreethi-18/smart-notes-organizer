@@ -1,3 +1,4 @@
+app.config["DEBUG"] = True
 from flask import Flask, render_template, request, redirect, session
 import mysql.connector
 
@@ -40,22 +41,29 @@ def login():
     return render_template("login.html")
 
 # -------- REGISTER --------
-@app.route("/register", methods=["POST"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    username = request.form["username"]
-    password = request.form["password"]
+    if request.method == "POST":
+        try:
+            username = request.form["username"]
+            password = request.form["password"]
 
-    conn = get_db_connection()
-    cursor = conn.cursor()
+            conn = get_db_connection()
+            cursor = conn.cursor()
 
-    cursor.execute(
-        "INSERT INTO users (username, password) VALUES (%s, %s)",
-        (username, password)
-    )
-    conn.commit()
-    conn.close()
+            cursor.execute(
+                "INSERT INTO users (username, password) VALUES (%s, %s)",
+                (username, password)
+            )
+            conn.commit()
+            conn.close()
 
-    return redirect("/")
+            return redirect("/")
+        
+        except Exception as e:
+            return str(e)   # 👈 THIS WILL SHOW REAL ERROR
+
+    return render_template("register.html")
 
 # -------- DASHBOARD --------
 @app.route("/dashboard")

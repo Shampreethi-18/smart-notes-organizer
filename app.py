@@ -1,4 +1,3 @@
-app.config["DEBUG"] = True
 from flask import Flask, render_template, request, redirect, session
 import mysql.connector
 

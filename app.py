@@ -5,12 +5,14 @@ app = Flask(__name__)
 app.secret_key = "secret123"
 
 # -------- DATABASE CONNECTION --------
+import os
+
 def get_db_connection():
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Preethi@2006",
-        database="smart_notes"
+        host=os.environ.get("DB_HOST"),
+        user=os.environ.get("DB_USER"),
+        password=os.environ.get("DB_PASSWORD"),
+        database=os.environ.get("DB_NAME")
     )
 
 # -------- LOGIN --------
@@ -125,5 +127,8 @@ def logout():
     return redirect("/")
 
 # -------- RUN --------
+import os
+
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
